@@ -1,3 +1,7 @@
+v0.2.12
+==================
+* fixed typo in bower.json file
+
 v0.2.11
 ==================
 * fixed a bug that didn't select a single result.
