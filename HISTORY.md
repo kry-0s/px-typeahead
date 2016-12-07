@@ -1,3 +1,7 @@
+v0.2.13
+==================
+* fixed behavior of pressing enter. Hopefully, for good.
+
 v0.2.12
 ==================
 * fixed typo in bower.json file

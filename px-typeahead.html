@@ -331,23 +331,34 @@ Custom property | Description | Default
           results;
 
       alreadySelected = Polymer.dom(this.root).querySelector('.item-selected');
-      if (alreadySelected){
-        selectedItem = alreadySelected;
-        selectedItem.classList.remove('item-selected');
-      }
 
       //if we only have 1 option, select it, otherwise, do nothing.
       results = Polymer.dom(this.root).querySelectorAll('.result');
       if (results.length ===1) {
+        //if we only have 1 result, we should select it.
         selectedItem = results[0];
-        this.set('inputValue',selectedItem.textContent.trim());
-        this.async(function() {
-          this.set('_suggestions',[]);
-        }, 100);
-        this.fire('px-typeahead-item-selected',selectedItem);
-        Polymer.dom(this.root).querySelector('input').focus();
+      } else if (results.length > 1) {
+        //let make sure we have a selected item, and if we do, set it to selectedItem and remove the class.
+        if (alreadySelected) {
+          //and if we do, mark it.
+          selectedItem = alreadySelected;
+          selectedItem.classList.remove('item-selected');
+        } else {
+          //we have results, but none of them are selected.
+          return false;
+        }
+      } else {
+        //no results, return false
+        return false;
       }
 
+      //if we've reached this point, selectedItem should be set.
+      this.set('inputValue',selectedItem.textContent.trim());
+      this.async(function() {
+        this.set('_suggestions',[]);
+      }, 100);
+      this.fire('px-typeahead-item-selected',selectedItem);
+      Polymer.dom(this.root).querySelector('input').focus();
     },
     _backspacePress: function(e) {
       var val = e.target.value;
