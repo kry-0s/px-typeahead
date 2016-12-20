@@ -1,3 +1,7 @@
+v0.2.15
+==================
+* update dependencies
+
 v0.2.14
 ==================
 * update buttons design dependency
