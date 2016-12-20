@@ -1,6 +1,6 @@
 {
     "name": "px-typeahead",
-    "version": "0.2.13",
+    "version": "0.2.14",
     "main": [
         "px-typeahead.html"
     ],
@@ -29,7 +29,7 @@
         "px-starter-kit-design": "^0.6.0",
         "px-slider": "^0.7.6",
         "px-spacing-design": "^0.3.8",
-        "px-buttons-design": "^0.4.26",
+        "px-buttons-design": "^1.1.0",
         "px-forms-design": "^0.3.17",
         "px-button-group-design": "^0.3.12",
         "iron-demo-helpers": "PolymerElements/iron-demo-helpers#~1.2.3",

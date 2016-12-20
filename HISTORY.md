@@ -1,3 +1,7 @@
+v0.2.14
+==================
+* update buttons design dependency
+
 v0.2.13
 ==================
 * fixed behavior of pressing enter. Hopefully, for good.
