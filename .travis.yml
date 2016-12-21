@@ -7,7 +7,7 @@ branches:
   except:
   - gh-pages
 addons:
-  firefox: '46.0'
+  firefox: latest
   apt:
     sources:
     - google-chrome
@@ -22,14 +22,13 @@ script:
 - xvfb-run wct --skip-plugin sauce
 - if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct --plugin sauce --skip-plugin
   local; fi
-env:
-  global:
-  - secure: cXCpZIGvAOvqbtdn4cobMO476QOMqhXKSJi3K0ogUQXd3fahTVU2TsPaTy5vOnlFt/lUdM263NJq2PWWDssBX2alSD7qTpvWohNMv0Xj772nr1AMtzETfOg2a1Nj678CExZLK/X+1kX6s8jkO03Np6ub7R9jve34L4CsoRPCwhS+ZTSnDagUuWys7dVf7C5Zs8tMvn6vrtvEggAFzlVBE9/hGrmuMlNr1aYQ8//mUch1J5K0pD1XQCq8KRqzWChgX+P6t8Jw8oe7ZyiAdACAQ4DpqE8+1E4X2BmgdLpjnjG5iRj7OvXz1+SNV6Vqml9khf7u8wOZSVn2IUq9CGnKlKDhUOo+Dw6ZE38IAwkwfLqJlZUzmYmtraCTELEs9hdrfPOUecvbx0fRGilndnutbwEGYv6h5ZLB79xBU9THmcfZswszo7VkAIz6lceoNXAPCYipthv7tmDjs3bweQai/bZMXeCU9Zuv3SNmOV+zL677zdjmzoaUoiSvUURmaBw0u72UXHUpwRrqEbDxn3pd67fpD2MhUBbFtJImzvelqlHohAqO89wmgCOs8b7ipd3VSGbthpM//UtFbbhjIfLH0O8njh2jqaCQUEqTZBFjSaqwKKMiRWWs1E3svxAysEjOez55tN7W4bzDEHrCp4m6/x2Rl2bCzU83G1ZbU0MErSk=
-  - secure: B2ZWLlFt7W8WO/z5TRMjGtZQXD7+J3qLMgF+mzEjHE/OFfGEnR/VxMnMfSBbh3zWFW4eTQuHnrhWYARd2xMlvk6OMKPrunSohGCvSxLjKDUCLOrMKONRARBbkq0i8cMkyGmT2+UgAlhlcWgwqUZTZISWmU+ChVca+OLfw2xmTbo6AVWzKykKiOJqyyUJcvOvudwptN7oEvmw56vBAMxug70OQd+A0gR9y0XsXXSk/IFYdu983JM/M5cszFvALpC6kNTSyxfreR51uaFuzxXS0v22v2WQFBICVeFa03brR8lShNG0jnywLiazSOHcz6PEwZRYYobL+dIqvBIsWz2CrcHME/n4CCiNWnPW1ZPTUgCGWbz6BWO3t3qsPTy0CB6axkOlk1tc8kQjXz7mscC5Q+g4VYzDuBKiZa35xJEDL1BUc/W5ORBu/iNW8ALkpmkbGrM1mAQJLXiPnR9mFGCwOdpBo3vTVb3n10Yme52AmSGNAnCShns3oLa8LORFiVIFEOPhUGk/ujQF48MBx9v6vw4NUmBwgxyRvTUbYcFJS2z36YAmM7Z4NjzThEGAL7g+eNI4Nu9LiE9QpHpaYD3LsIqjExW/jvi/8kWpCKOofpYxx7H+c2Kh20A7Jav86dhstpDg6+r6Oplxh4Jfarnb/mpysx646MpBw+aG3USnHcI=
-before_install:
-- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then openssl aes-256-cbc -k "$password"
-  -in id_rsa.enc -out deploy_key -d; fi
 after_success:
+- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then openssl aes-256-cbc -k "$DEPLOYSECRET"
+  -in deploy.enc -out deploy_key -d; fi
 - cd $TRAVIS_BUILD_DIR/scripts
 - chmod 755 ghp.sh
 - "./ghp.sh"
+env:
+  global:
+  - secure: Qw9wqihzA4fnMSdIWSTmKaaookzEqzbRqbkPLQD0GGjvwLidgKUvXK6w+KlRZi24uXZphMKnrAyRX5BpvBJZlpif1ItzS/tKLWu2+s5b7NuvvE2TvU8ATlCMA7WBCssOUSAzLTMEFcwSvDLZLgyo6nYqiaYCDuSBqg5oHmYCx21CYd08czql3tnwS/2y71c2FSY7IU3cayWYeWGJR+wOGhTZoERgOhWPbaCzF8a/rHGLc9GXfEpTmD10ZZPwE+oy/C2M09IQnLXNSoErzWqWewV8ljWcht2JFuKIjd1mT4ztK/a7v9kShdfwIS+pF6lz102/b3CG4MIVgzSEq8cAgjPiV4XyONF41/G60qyjTNjaCJtmIsNcM9TVyuIADGK/QRQhOD7HXOhm1h/cdfgMtSd3HmOIyE2tZbNYcboHcbkv+oG7J2zK1zNqn+xChqGemyEy07isIxIehso1qJEcc03dXebqeyEXqnGB5zVT0V0bM5MxHX+1Z/7B9sLGfFwDyjRLhlENrJU/kl7xMfiBjTwi4rFo4/r8VcdUl2vNgRBTnbG3nB0lnDk50Wz8eR7mf8UIZrPxV7UAjvJUiw1o3/ls3X0HssX6VxkvJha2b6XUrBQzSMAH1AT7K/ldy8K67IMKZ7EZRtt9KMg+I2flMu75FQlr4L0oB6/8ZSgSVac=
+  - secure: gKzMReDOAvbHsWOzvXI6f/4/lBWxLNtmyS4IdorOCdjwdNJ0O8r41qTuDp0PuHq/1IwWliMGRwf1wXZqQo/VkH/EgQJKeNI4X97CeeAk0RZPsfpvWb7PBYR5+w4HeQNn9xHim9nNSE1Hsr4BELA2TVfyfx90+T2cRMAOgKUjprsaTGRDMnWr1FL0sIRxgGv9qUIJR6QBofakAoIGFqiAxN3ymEn4kWzbZRglWvsm33oZPhWu1sZMh0DtAH6/oDRSQkBKPH1DeU043dmmwhz+hSRwvm4+AzZLPuHueFPI1Nyrc8nggwECmSE4RIA/warZ7frijf1rUWVRjjGuvNmDK+jrnmmU01bvVHdvKNvh570m8znV4EN29ReLcI16WmJnEwNXw95537lO6UdJtr5AJUMqJ5wTnC1LaJDBA+eODyVSrfy68JETFR9lpHAg/367trU+oqVsltf3l7mClSOBlMFrjcNFW3CdLELy4LuUKTaKC6ovOMgwFDmMwFzx0iEx7W9PPRKDZNV2GElKtiQo1ivaed9JfRsacndr+wCEpZlf3fBKRPJ2IUa10gwzsRhoZFECJm3vKbn18fYLws++ecjpelWDXITF3tzx4XvUgdsAg2I1xcfh20hrgbvL+QJ4DKcRrbaSTUW94weJEdA3R3fnXwFSlb39mSK8sbKxJzc=
