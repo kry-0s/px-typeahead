@@ -1,6 +1,6 @@
 {
     "name": "px-typeahead",
-    "version": "0.2.15",
+    "version": "0.2.16",
     "main": [
         "px-typeahead.html"
     ],
@@ -13,7 +13,6 @@
         "node_modules",
         "test",
         "scripts"
-
     ],
     "dependencies": {
         "polymer": "^1.7.0",
