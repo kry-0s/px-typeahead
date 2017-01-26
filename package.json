@@ -1,8 +1,8 @@
 {
     "name": "px-typeahead",
     "author": "General Electric",
-    "description": "A Px component",
-    "version": "0.2.17",
+    "description": "A Predix UI component",
+    "version": "0.2.18",
     "private": true,
     "extName": null,
     "repository": {
