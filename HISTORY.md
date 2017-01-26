@@ -1,6 +1,10 @@
+v0.2.19
+==================
+* added px-dark-demo-theme
+
 v0.2.18
 ==================
-* added new component
+* added new demo component
 
 v0.2.17
 ==================
