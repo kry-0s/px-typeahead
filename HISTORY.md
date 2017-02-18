@@ -1,3 +1,7 @@
+v0.2.20
+==================
+* fixed arrow up and down bug throwing error if there's no result.
+
 v0.2.19
 ==================
 * added px-dark-demo-theme

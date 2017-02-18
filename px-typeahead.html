@@ -294,7 +294,9 @@ Custom property | Description | Default
         if (suggestionsMenu){
           children = suggestionsMenu.getElementsByTagName('li');
           selectedItem = children[0];
-          selectedItem.classList.add('item-selected');
+          if (selectedItem) {
+            selectedItem.classList.add('item-selected');
+          }
         }
       }
     //this.set('inputValue',selectedItem.textContent.trim());
@@ -319,7 +321,9 @@ Custom property | Description | Default
         if (suggestionsMenu) {
           children = suggestionsMenu.getElementsByTagName('li');
           selectedItem = children[0];
-          selectedItem.classList.add('item-selected');
+          if (selectedItem) {
+            selectedItem.classList.add('item-selected');
+          }
         }
       }
     },
