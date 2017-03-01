@@ -1,10 +1,10 @@
-#Px-Typeahead
+#Px-Typeahead [![Build Status](https://travis-ci.org/PredixDev/px-typeahead.svg?branch=master)](https://travis-ci.org/PredixDev/px-typeahead)
 
-A typeahead functionality using polymer, vanilla javascript , px-inuit-styling , e2e tests written using web-component-tester, mocha and chai
+[![px-typeahead demo](px-typeahead.png?raw=true)](https://github.com/PredixDev/px-typeahead)
 
 ## Overview
 
-px-typeahead is a Predix UI component. It offers search capability with user input among all possible suggestions as part of the input array and lists all the suggestions which has the input and show all the possibilities upto the max-suggestions listed as part of declaration.
+Px-typeahead is a Predix UI component. It allows a user to input a string, and will search through all possible suggestions in the input array passed to the component, limiting the list based on the user input.
 
 ## Usage
 
