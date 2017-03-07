@@ -1,3 +1,7 @@
+v
+==================
+* Cleaned up code by using px-forms-design instead of custom css 
+
 v0.2.20
 ==================
 * fixed arrow up and down bug throwing error if there's no result.

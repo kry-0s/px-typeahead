@@ -33,51 +33,28 @@ Predix branding rules go in px-typeahead-predix.scss, not in this file.
 @import "px-viewport-design/_base.viewport.scss";
 
 // Base
+$inuit-enable-input--search     : true;
+@import "px-forms-design/_base.forms.scss";
 
 // Meta
-
+ 
 // Objects
+@import "px-list-bare-design/_objects.list-bare.scss"; 
 
 // Component
-
-:host {
-  overflow: hidden;
-  max-height: calculateRem(31px);
-  font-family: "GE Inspira Sans", sans-serif;
-  font-size : medium;
-}
-
-.parentdiv {
-	justify-content: flex-end;
-	align-items: center;
-}
-
-.search {
-  position: relative;
-  border:0;
-  width : 100%;
-  height: calculateRem(30px);
-  max-height: calculateRem(222px);
-}
-.fa-search {
-    position: relative;
-    z-index: 1;
-}
-.container {
+.dropdown__container {
 	ul {
-		padding-left: 0;
 		display: inline-block;
 		margin : 0;
 		max-height: calculateRem(222px);
     overflow-y: auto;
-    z-index: 2;
+    z-index: 1;
   	position: absolute;
-		margin-left: -1px; //to account for border
 		li {
 			text-overflow: ellipsis;
 			cursor: pointer;
       outline: none;
-  		}
+    }
 	}
 }
 
