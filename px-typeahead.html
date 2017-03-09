@@ -160,12 +160,11 @@ Custom property | Description | Default
         notify:true
       },
       /**
-       * The current value of the input.
+       * The currently selected value of the input.
        */
-      inputValue:{
+      value:{
         type:String,
-        notify:true,
-        observer: '_search'
+        notify:true
       },
       /**
        * //TODO - For Future Input object.
@@ -174,9 +173,20 @@ Custom property | Description | Default
         type:Object,
         notify:true
       },
-      searchTerm: {
+      /**
+       * The current value of the input while the user is searching.
+       */
+      inputValue: {
         type: String,
-        value: ''
+        notify: true,
+        observer: '_search'
+      },
+      /*
+       * Helper function to determine if typeahead is attached yet
+       */
+      _isAttached: {
+        type: Boolean, 
+        value: false
       }
     },
     behaviors: [Polymer.IronResizableBehavior],
@@ -195,6 +205,9 @@ Custom property | Description | Default
           ptinputs[i]._suggestions = [];
         }
       });
+    },
+    attached: function() {
+      this.set('_isAttached', true)
     },
     _setSearchResultSize: function() {
       if (this.$$('#searchResults')) {
@@ -252,12 +265,13 @@ Custom property | Description | Default
 
         this.$.search.focus();
         this.set('inputValue',text);
+        this.set('value',text);
         this.async(function() {
           this.set('_suggestions',[]);
         },100);
 
 
-        this.fire('px-typeahead-item-selected',this.inputValue);
+        this.fire('px-typeahead-item-selected',this.value);
         e.stopPropagation();
 
     },
@@ -288,7 +302,7 @@ Custom property | Description | Default
           }
         }
       }
-    //this.set('inputValue',selectedItem.textContent.trim());
+    //this.set('value',selectedItem.textContent.trim());
     },
     _upArrowPress: function(e) {
       var alreadySelected,
@@ -346,11 +360,12 @@ Custom property | Description | Default
       }
 
       //if we've reached this point, selectedItem should be set.
+      this.set('value',selectedItem.textContent.trim());
       this.set('inputValue',selectedItem.textContent.trim());
       this.async(function() {
         this.set('_suggestions',[]);
       }, 100);
-      this.fire('px-typeahead-item-selected',selectedItem);
+      this.fire('px-typeahead-item-selected',this.value);
       Polymer.dom(this.root).querySelector('input').focus();
     },
     _backspacePress: function(e) {
@@ -458,39 +473,41 @@ Custom property | Description | Default
       return resultsList;
     },
     _search:function(term){
-      this.debounce('search', function() {
-        var matched = [],
-        resultListUl,
-        searchResultsLi,
-        fullString,
-        termLocation,
-        newString;
+      if(this._isAttached){
+        this.debounce('search', function() {
+          var matched = [],
+          resultListUl,
+          searchResultsLi,
+          fullString,
+          termLocation,
+          newString;
 
-        if (!term){
-          this.set('_suggestions',[]);
-          return;
-        }
+          if (!term){
+            this.set('_suggestions',[]);
+            return;
+          }
 
-        if (this.localCandidates && this.localCandidates.length){
-          matched = this._localCandidatesSearch(term);
-        }
+          if (this.localCandidates && this.localCandidates.length){
+            matched = this._localCandidatesSearch(term);
+          }
 
-        if (this._prefetchedCandidates && this._prefetchedCandidates.length){
-          matched = this._prefetchedCandidatesSearch(term);
-        }
+          if (this._prefetchedCandidates && this._prefetchedCandidates.length){
+            matched = this._prefetchedCandidatesSearch(term);
+          }
 
-        if (this.remoteUrl){
-          matched = this._remoteUrlSearch(term);
-        }
+          if (this.remoteUrl){
+            matched = this._remoteUrlSearch(term);
+          }
 
-        this.set('_suggestions',matched);
+          this.set('_suggestions',matched);
 
-        //make sure the results are the same size as the input box.
-        this.async(function() {
-          this._setSearchResultSize();
-        },5);
-      },100);
+          //make sure the results are the same size as the input box.
+          this.async(function() {
+            this._setSearchResultSize();
+          },5);
+        },100);
 
+      }
     }
     /**
      * this event is fired when the searching has begun on a remote data source
