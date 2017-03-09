@@ -53,8 +53,9 @@ Custom property | Description | Default
       placeholder="{{placeholder}}" 
       value="{{inputValue::input}}" 
       on-keyup="_keyup" 
-      on-keydown="_keydown" 
-      on-input="_onSearchInputChange" 
+      on-keydown="_keydown"
+      on-focus="_onfocus"
+      on-blur="_onblur"
       autocomplete="off">
     </input>
     <template is="dom-if" if="{{_isSuggestionsEmtpy(_suggestions)}}">
@@ -187,6 +188,13 @@ Custom property | Description | Default
       _isAttached: {
         type: Boolean, 
         value: false
+      },
+      /*
+       * Helper function to determine if typeahead is attached yet
+       */
+      _isFocused: {		
+        type: Boolean,		
+        value: false
       }
     },
     behaviors: [Polymer.IronResizableBehavior],
@@ -232,14 +240,6 @@ Custom property | Description | Default
       } 
     },
     /**
-     * fires an event when search input field changes
-     * @event px-typeahead-keydown
-     * @param {e} event
-     */
-    _onSearchInputChange: function(e){
-      this.fire('px-typeahead-search-input-change', e);
-    },
-    /**
      * on mouse over for each li item
      *
      */
@@ -249,6 +249,18 @@ Custom property | Description | Default
         alreadySelected.classList.remove('item-selected');
       }
       e.currentTarget.classList.add('item-selected');
+    },
+    /**
+     * Sets _isFocused to true
+     */
+    _onfocus: function(e) {		
+      this.set('_isFocused', true);		
+    },
+    /**
+     * Sets _isFocused to false
+     */
+    _onblur: function(e) {		
+      this.set('_isFocused', false);		
     },
     /**
      * Fired whenever an item is selected.
@@ -302,7 +314,6 @@ Custom property | Description | Default
           }
         }
       }
-    //this.set('value',selectedItem.textContent.trim());
     },
     _upArrowPress: function(e) {
       var alreadySelected,
@@ -473,7 +484,7 @@ Custom property | Description | Default
       return resultsList;
     },
     _search:function(term){
-      if(this._isAttached){
+      if(this._isAttached  && this._isFocused){
         this.debounce('search', function() {
           var matched = [],
           resultListUl,
