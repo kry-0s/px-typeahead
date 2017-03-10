@@ -37,9 +37,10 @@ function runCustomTests() {
           var onKeyupHandle = function(e) {
             assert.isTrue(!container);
           };
-          
+          fireFocusEvent(typeaheadInputEl);
           typeaheadInputEl.value = 'a';
           fireInputEvent(typeaheadInputEl);
+          
           flush(() => { 
             setTimeout(function() {
               var typeaheadEl = Polymer.dom(document).querySelector('px-typeahead'),

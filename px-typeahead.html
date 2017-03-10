@@ -185,13 +185,6 @@ Custom property | Description | Default
       /*
        * Helper function to determine if typeahead is attached yet
        */
-      _isAttached: {
-        type: Boolean, 
-        value: false
-      },
-      /*
-       * Helper function to determine if typeahead is attached yet
-       */
       _isFocused: {		
         type: Boolean,		
         value: false
@@ -213,9 +206,6 @@ Custom property | Description | Default
           ptinputs[i]._suggestions = [];
         }
       });
-    },
-    attached: function() {
-      this.set('_isAttached', true)
     },
     _setSearchResultSize: function() {
       if (this.$$('#searchResults')) {
@@ -484,7 +474,7 @@ Custom property | Description | Default
       return resultsList;
     },
     _search:function(term){
-      if(this._isAttached  && this._isFocused){
+      if(this._isFocused){
         this.debounce('search', function() {
           var matched = [],
           resultListUl,
