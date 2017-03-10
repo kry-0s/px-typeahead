@@ -1,6 +1,6 @@
 v1.0.0
 ==================
-* Cleaned up code by using px-forms-design instead of custom css 
+* Cleaned up code by using px-forms-design instead of custom css to create search icon in input field
 * Separated out inputValue and value properties
 * removed some css variables
 
