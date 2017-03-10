@@ -32,17 +32,17 @@
       <px-demo-configs configs="[[configs]]" props="{{props}}" chosen-config="{{chosenConfig}}"></px-demo-configs>
 
       <!-- Props -->
-      <px-demo-props props="{{props}}" config="[[chosenConfig]]"></px-demo-props>
+      <px-demo-props props="{{props}}" config="[[chosenConfig]]" class="flex__item"></px-demo-props>
 
       <!-- Component ---------------------------------------------------------->
       <px-demo-component>
         <div style="width:250px">
           <px-typeahead
-            max-suggestions="{{props.maxSuggestions.value}}"
             local-candidates="{{props.localCandidates.value}}"
+            disabled="{{props.disabled.value}}"
             prefetch-url="{{props.prefetchUrl.value}}"
             placeholder="[[props.placeholder.value]]">
-            </px-typeahead>
+          </px-typeahead>
         </div>
       </px-demo-component>
       <!-- END Component ------------------------------------------------------>
@@ -86,15 +86,18 @@
         type: Array,
         value: function(){
           return [
-            { configName: "Default",
+            { 
+              configName: "Default",
               configReset: true,
               prefetchUrl: ''
-           },
-            { maxSuggestions: 5,
+            },
+            { 
               configName: "Prefetch URL",
+              disabled: false,
               localCandidates: '',
-              placeholder: "Please type in your Query - the list is being brought in from a json file",
-              prefetchUrl: "https://www.predix-ui.com/px-typeahead/px-typeahead/countries.json"}
+              placeholder: "the list is being brought in from a json file",
+              prefetchUrl: "https://www.predix-ui.com/px-typeahead/px-typeahead/countries.json"
+            }
           ];
         }
       }
@@ -104,15 +107,15 @@
      * A reference for `this.props`. Read the documentation there.
      */
     demoProps: {
-      maxSuggestions: {
-        type: Number,
-        defaultValue: 10,
-        inputType: 'text'
-      },
       placeholder: {
         type: String,
-        defaultValue: "Please type in your Query:",
+        defaultValue: "Enter Your Search Query",
         inputType: 'text'
+      },
+      disabled: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
       },
       localCandidates: {
         type: Array,
@@ -182,10 +185,6 @@
         type: String,
         defaultValue: "https://www.predix-ui.com/px-typeahead/px-typeahead/countries.json"
       }
-    },
-
-    ready: function () {
-
     }
   });
 </script>

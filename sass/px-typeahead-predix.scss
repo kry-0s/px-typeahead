@@ -23,60 +23,21 @@ common/abstract rules go in px-typeahead-sketch.scss, not in this file.
 @import "px-colors-design/_settings.colors.scss";
 @import 'px-typeahead-sketch.scss';
 
-:host {
-	--iron-icon-height: $inuit-base-font-size;
-	--iron-icon-width: $inuit-base-font-size;
-}
-.parentdiv {
-	background-color:	var(--px-typeahead-background-color, $gray2);
-	border: 1px solid var(--px-typeahead-border-color, $gray5);
-	margin-bottom: .2rem;
-	box-shadow: inset 0 0 0 1px var(--px-typeahead-box-shadow-color, $gray3);
-  &.focus {
-		border: 1px solid var(--px-typeahead-border-color--focus, $select-blue-default);
-		box-shadow: inset 0 0 0 1px var(--px-typeahead-box-shadow-color--focus, $gray4);
-  }
-  -moz-user-focus: normal;
-  &.-moz-focus {
-		border: 1px solid var(--px-typeahead-border-color--focus, $select-blue-default);
-		box-shadow: inset 0 0 0 1px var(--px-typeahead-box-shadow-color--focus, $gray4);
-  }
-}
-
-#icon {
-	color: var(--px-typeahead-text-color, $black);
-}
-
-.search {
-  background-color: var(--px-typeahead-background-color, $gray2);
-	color: var(--px-typeahead-text-color, $black);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  vertical-align: text-top;
-  font-family: "GE Inspira Sans", sans-serif;
-  font-size: medium;
-  outline: none;
-  -moz-user-focus: normal;
-}
-
-.container {
+.dropdown__container {
 	ul {
-    background-color: var(--px-typeahead-background-color, $gray2);
+    background-color: var(--px-typeahead-background-color, $gray1);
   	border-radius: 3px;
   	color: var(--px-typeahead-text-color, $black);
   	border: 1px solid var(--px-typeahead-border-color, $gray5);
+		padding-top: $inuit-base-spacing-unit--tiny;
+
 		li {
+			padding: $inuit-base-spacing-unit--tiny $inuit-base-spacing-unit--small;
+			margin-bottom:$inuit-base-spacing-unit--tiny;
  			&.item-selected {
- 				background-color: var(--px-typahead-background-color--selected, $select-blue-default);
-    			color: var(--px-typahead-text-color--selected, $white);
+ 				background-color: var(--px-typeahead-background-color--selected, $select-blue-default);
+				color: var(--px-typeahead-text-color--selected, $white);
  			}
- 			&:first-child {
-    			border-radius: 4px 4px 0 0;
-  			}
-  			:last-child {
-    			border-radius: 0 0 4px 4px;
-  			}
 			span.bold {
 			  font-weight: 600;
 			}

@@ -24,9 +24,6 @@ Custom property | Description | Default
 `--px-typeahead-background-color` | Background color for the typeahead input | `$gray2`
 `--px-typeahead-background-color--selected` | Background color for selected typeahead result | `$select-blue-default`
 `--px-typeahead-border-color` | Border color for the typeahead input | `$gray5`
-`--px-typeahead-border-color--focus` | Border color for the typeahead input when its focused | `$select-blue-default`
-`--px-typeahead-box-shadow-color` | Box shadow color for the typeahead input | `$gray3`
-`--px-typeahead-box-shadow-color--focus` | Box shadow color for the typeahead input when its focused | `$gray4`
 `--px-typeahead-text-color` | Fill color for text in the input field and unselected results | `$black`
 `--px-typeahead-text-color--selected` | Fill color for text of a selected result | `$white`
 
@@ -42,26 +39,31 @@ Custom property | Description | Default
     <style include="px-typeahead-styles"></style>
     <template is="dom-if" if="{{prefetchUrl}}">
       <iron-ajax
-      auto
-      url="{{prefetchUrl}}"
-      handle-as="json"
-      last-response="{{_prefetchedCandidates}}">
+        auto
+        url="{{prefetchUrl}}"
+        handle-as="json"
+        last-response="{{_prefetchedCandidates}}">
       </iron-ajax>
     </template>
 
-    <div class$="[[_calculateParentDivClass(inputFocused)]]" tabindex="0" id="mainContainer">
-      <div style="flex:0 1 99%;"><input id="search" class="search u-pl--" disabled$="[[disabled]]"
-      on-keyup="_keyup" on-keydown="_keydown" placeholder="{{placeholder}}" value="{{inputValue::input}}" on-focus="_onfocus" on-blur="_onblur" autocomplete="off"></input>
-      </div>
-      <div style="flex:0 0 1%;" id="icong339
-      "><iron-icon icon="fa:fa-search"></i></div>
-    </div>
+    <input 
+      id="search" 
+      class="text-input input--search" 
+      disabled$="[[disabled]]" 
+      placeholder="{{placeholder}}" 
+      value="{{inputValue::input}}" 
+      on-keyup="_keyup" 
+      on-keydown="_keydown"
+      on-focus="_onfocus"
+      on-blur="_onblur"
+      autocomplete="off">
+    </input>
     <template is="dom-if" if="{{_isSuggestionsEmtpy(_suggestions)}}">
-      <div class="container" >
-        <ul class="layout__item" id="searchResults">
+      <div class="dropdown__container" >
+        <ul id="searchResults" class="list-bare">
           <template is="dom-repeat" items="[[_boldResults(_suggestions.*, inputValue)]]">
-             <li tabindex="-1" on-tap="_select" on-mouseover="_onhover"
-             on-keyup="_keyup" class="u-p-- result">
+             <li on-tap="_select" on-mouseover="_onhover"
+             on-keyup="_keyup" class="result">
              [[item.prefix]]<span class="bold">[[item.highlight]]</span>[[item.suffix]]
             </li>
           </template>
@@ -77,19 +79,14 @@ Custom property | Description | Default
     is: 'px-typeahead',
 
     /**
-         * Properties block, expose attribute values to the DOM via 'notify'
-         *
-         * @property properties
-         * @type Object
-         */
+     * Properties block, expose attribute values to the DOM via 'notify'
+     *
+     * @property properties
+     * @type Object
+     */
     properties: {
-      inputFocused: {
-        type: Boolean,
-        value: false,
-        notify: true
-      },
       /**
-       * Add this to disable the input, default false.
+       * Sets diabled on the input element. 
        * @type {Object}
        */
       disabled: {
@@ -107,10 +104,11 @@ Custom property | Description | Default
        * The search candidates from local data model.
        */
       localCandidates:{
-      type: Array,
-      value: function() {
-        return [];
-      }},
+        type: Array,
+        value: function() {
+          return [];
+        }
+      },
       /**
        * Url for a prefectched list in json format for the list of suggestion candidates.
        * The response should be an array - for example: ["a","b"]
@@ -139,7 +137,7 @@ Custom property | Description | Default
         notify: true
       },
       /**
-       * Maximum number of suggestions
+       * Maximum number of suggestions for remote urls
        */
       maxSuggestions:{
         type:Number,
@@ -155,7 +153,7 @@ Custom property | Description | Default
       },
       /**
        * A boolean property to indicate if a search happens with a remote Url.
-       * must be used together with remoteUrl.
+       * Must be used together with remoteUrl.
        */
       remoteUrlSearching:{
         type:Boolean,
@@ -163,12 +161,11 @@ Custom property | Description | Default
         notify:true
       },
       /**
-       * The current value of the input.
+       * The currently selected value of the input.
        */
-      inputValue:{
+      value:{
         type:String,
-        notify:true,
-        observer: '_search'
+        notify:true
       },
       /**
        * //TODO - For Future Input object.
@@ -177,9 +174,20 @@ Custom property | Description | Default
         type:Object,
         notify:true
       },
-      searchTerm: {
+      /**
+       * The current value of the input while the user is searching.
+       */
+      inputValue: {
         type: String,
-        value: ''
+        notify: true,
+        observer: '_search'
+      },
+      /*
+       * Helper function to determine if typeahead is attached yet
+       */
+      _isFocused: {		
+        type: Boolean,		
+        value: false
       }
     },
     behaviors: [Polymer.IronResizableBehavior],
@@ -201,41 +209,25 @@ Custom property | Description | Default
     },
     _setSearchResultSize: function() {
       if (this.$$('#searchResults')) {
-        var mainContainerRect = this.$.mainContainer.getBoundingClientRect();
-        this.$$('#searchResults').style.width = mainContainerRect.width + 2 + 'px'; //that 2 is for the outline
+        var searchInputRect = this.$.search.getBoundingClientRect();
+        this.$$('#searchResults').style.width = searchInputRect.width + 'px';
       }
     },
     _isSuggestionsEmtpy: function() {
       return this._suggestions.length;
     },
-    _calculateParentDivClass: function() {
-      var focus = (this.inputFocused) ? ' focus' :'';
-      return 'flex parentdiv u-pr-' + focus;
-    },
 
     /**
      * Callback for keydown event, checks on keys up or down, and disables them.
+     * 40: down arrow
+     * 38: up arrow
      *
      * @param {e} event
      */
     _keydown: function(e) {
       if (e.which === 40 || e.which === 38){
           e.preventDefault();
-      }
-    },
-    /**
-     * adding the outline on focus of input
-     *
-     */
-    _onfocus: function(e) {
-      this.set('inputFocused', true);
-    },
-    /**
-     * removing the outline on blur out of input
-     *
-     */
-    _onblur: function(e) {
-      this.set('inputFocused', false);
+      } 
     },
     /**
      * on mouse over for each li item
@@ -247,6 +239,18 @@ Custom property | Description | Default
         alreadySelected.classList.remove('item-selected');
       }
       e.currentTarget.classList.add('item-selected');
+    },
+    /**
+     * Sets _isFocused to true
+     */
+    _onfocus: function(e) {		
+      this.set('_isFocused', true);		
+    },
+    /**
+     * Sets _isFocused to false
+     */
+    _onblur: function(e) {		
+      this.set('_isFocused', false);		
     },
     /**
      * Fired whenever an item is selected.
@@ -263,12 +267,13 @@ Custom property | Description | Default
 
         this.$.search.focus();
         this.set('inputValue',text);
+        this.set('value',text);
         this.async(function() {
           this.set('_suggestions',[]);
         },100);
 
 
-        this.fire('px-typeahead-item-selected',this.inputValue);
+        this.fire('px-typeahead-item-selected',this.value);
         e.stopPropagation();
 
     },
@@ -299,7 +304,6 @@ Custom property | Description | Default
           }
         }
       }
-    //this.set('inputValue',selectedItem.textContent.trim());
     },
     _upArrowPress: function(e) {
       var alreadySelected,
@@ -357,11 +361,12 @@ Custom property | Description | Default
       }
 
       //if we've reached this point, selectedItem should be set.
+      this.set('value',selectedItem.textContent.trim());
       this.set('inputValue',selectedItem.textContent.trim());
       this.async(function() {
         this.set('_suggestions',[]);
       }, 100);
-      this.fire('px-typeahead-item-selected',selectedItem);
+      this.fire('px-typeahead-item-selected',this.value);
       Polymer.dom(this.root).querySelector('input').focus();
     },
     _backspacePress: function(e) {
@@ -390,8 +395,6 @@ Custom property | Description | Default
          this._backspacePress(e);
       } else {
         var input = this.$.search;
-        //this._search(input.value.trim());
-        input.focus();
         this._checkIfSingleResult(e);
       }
     },
@@ -451,6 +454,9 @@ Custom property | Description | Default
       },this.remoteUrlWaitMs);
       return matched;
     },
+    /*
+     * Bolds matching letters
+     */
     _boldResults: function(items, term) {
       var resultsList = items.base.map(function(fullString) {
         var termLocation = fullString.trim().toLowerCase().indexOf(term.trim().toLowerCase());
@@ -468,48 +474,50 @@ Custom property | Description | Default
       return resultsList;
     },
     _search:function(term){
-      this.debounce('search', function() {
-        var matched = [],
-        resultListUl,
-        searchResultsLi,
-        fullString,
-        termLocation,
-        newString;
+      if(this._isFocused){
+        this.debounce('search', function() {
+          var matched = [],
+          resultListUl,
+          searchResultsLi,
+          fullString,
+          termLocation,
+          newString;
 
-        if (!term){
-          this.set('_suggestions',[]);
-          return;
-        }
+          if (!term){
+            this.set('_suggestions',[]);
+            return;
+          }
 
-        if (this.localCandidates && this.localCandidates.length){
-          matched = this._localCandidatesSearch(term);
-        }
+          if (this.localCandidates && this.localCandidates.length){
+            matched = this._localCandidatesSearch(term);
+          }
 
-        if (this._prefetchedCandidates && this._prefetchedCandidates.length){
-          matched = this._prefetchedCandidatesSearch(term);
-        }
-        if (this.remoteUrl){
-          matched = this._remoteUrlSearch(term);
-        }
+          if (this._prefetchedCandidates && this._prefetchedCandidates.length){
+            matched = this._prefetchedCandidatesSearch(term);
+          }
 
-        //matched = this._boldResults(matched, term);
+          if (this.remoteUrl){
+            matched = this._remoteUrlSearch(term);
+          }
 
-        this.set('_suggestions',matched);
-        //make sure the results are the same size as the input box.
-        this.async(function() {
-          this._setSearchResultSize();
-        },5);
-      },100);
+          this.set('_suggestions',matched);
 
+          //make sure the results are the same size as the input box.
+          this.async(function() {
+            this._setSearchResultSize();
+          },5);
+        },100);
+
+      }
     }
     /**
      * this event is fired when the searching has begun on a remote data source
      * @event px-typeahead-remote-searching-start
      */
-     /**
-      * this event is fired when the searching has ended on a remote data source
-      * @event px-typeahead-remote-searching-end
-      */
+    /**
+     * this event is fired when the searching has ended on a remote data source
+     * @event px-typeahead-remote-searching-end
+     */
   });
 
 </script>
