@@ -1,6 +1,8 @@
-v
+v1.0.0
 ==================
 * Cleaned up code by using px-forms-design instead of custom css 
+* Separated out inputValue and value properties
+* removed some css variables
 
 v0.2.20
 ==================
