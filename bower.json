@@ -1,6 +1,6 @@
 {
   "name": "px-typeahead",
-  "version": "0.2.20",
+  "version": "1.0.0",
   "main": [
     "px-typeahead.html"
   ],
