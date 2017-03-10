@@ -56,6 +56,7 @@ Custom property | Description | Default
       on-keydown="_keydown"
       on-focus="_onfocus"
       on-blur="_onblur"
+      on-input="_onSearchInputChange"
       autocomplete="off">
     </input>
     <template is="dom-if" if="{{_isSuggestionsEmtpy(_suggestions)}}">
@@ -252,6 +253,14 @@ Custom property | Description | Default
     _onblur: function(e) {		
       this.set('_isFocused', false);		
     },
+    /**
+     * fires an event when search input field changes
+     * @event px-typeahead-keydown
+     * @param {e} event
+     */
+     _onSearchInputChange: function(e){
+       this.fire('px-typeahead-search-input-change', e);
+      },
     /**
      * Fired whenever an item is selected.
      * @event px-typeahead-item-selected

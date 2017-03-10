@@ -1,3 +1,7 @@
+v1.1.0
+==================
+* added event `px-typeahead-search-input-change`
+
 v1.0.0
 ==================
 * Cleaned up code by using px-forms-design instead of custom css to create search icon in input field
