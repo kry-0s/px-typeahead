@@ -35,7 +35,7 @@ common/abstract rules go in px-typeahead-sketch.scss, not in this file.
 			padding: $inuit-base-spacing-unit--tiny $inuit-base-spacing-unit--small;
 			margin-bottom:$inuit-base-spacing-unit--tiny;
  			&.item-selected {
- 				background-color: var(--px-typeahead-background-color--selected, $select-blue-default);
+ 				background-color: var(--px-typeahead-background-color--selected, $select-default);
 				color: var(--px-typeahead-text-color--selected, $white);
  			}
 			span.bold {

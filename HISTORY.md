@@ -1,6 +1,11 @@
+v2.0.0
+==================
+* major revision to pick up dependencies for redesign
+
 v1.1.1
 ==================
 * added px-polymer-font-awesome to bower.json
+
 v1.1.0
 ==================
 * added event `px-typeahead-search-input-change`
