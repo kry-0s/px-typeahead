@@ -37,9 +37,9 @@ $inuit-enable-input--search     : true;
 @import "px-forms-design/_base.forms.scss";
 
 // Meta
- 
+
 // Objects
-@import "px-list-bare-design/_objects.list-bare.scss"; 
+@import "px-list-bare-design/_objects.list-bare.scss";
 
 // Component
 .dropdown__container {
@@ -50,6 +50,7 @@ $inuit-enable-input--search     : true;
     overflow-y: auto;
     z-index: 1;
   	position: absolute;
+    word-wrap: break-word;
 		li {
 			text-overflow: ellipsis;
 			cursor: pointer;

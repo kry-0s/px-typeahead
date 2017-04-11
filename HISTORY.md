@@ -1,3 +1,7 @@
+v2.0.1
+==================
+* added word-wrap to fix #10
+
 v2.0.0
 ==================
 * major revision to pick up dependencies for redesign
