@@ -1,10 +1,8 @@
-v2.0.1
-==================
-* added word-wrap to fix #10
-
-v2.0.0
+v2.0.0-prerelease
 ==================
 * major revision to pick up dependencies for redesign
+* added word-wrap to fix #10
+* component redesign
 
 v1.1.1
 ==================
