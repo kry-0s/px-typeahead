@@ -13,7 +13,6 @@
 
 <!-- Imports for this componnent -->
 <link rel="import" href="../../px-demo/css/px-demo-styles.html" />
-<link rel="import" href="../px-typeahead.html" />
 
 <!-- Demo DOM module -->
 <dom-module id="local-element-demo">
@@ -86,16 +85,16 @@
         type: Array,
         value: function(){
           return [
-            { 
+            {
               configName: "Default",
               configReset: true,
               prefetchUrl: ''
             },
-            { 
+            {
               configName: "Prefetch URL",
               disabled: false,
               localCandidates: '',
-              placeholder: "the list is being brought in from a json file",
+              placeholder: "Options from a JSON file",
               prefetchUrl: "https://www.predix-ui.com/px-typeahead/px-typeahead/countries.json"
             }
           ];
@@ -109,7 +108,7 @@
     demoProps: {
       placeholder: {
         type: String,
-        defaultValue: "Enter Your Search Query",
+        defaultValue: "Enter your search query",
         inputType: 'text'
       },
       disabled: {

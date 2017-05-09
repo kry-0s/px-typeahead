@@ -50,10 +50,10 @@ $typeahead-icon-color--disabled     :  #{$gray4} !default;
     z-index: 1;
   	position: absolute;
     word-wrap: break-word;
-    background-color: var(--px-typeahead-background-color, $white);
-  	color: var(--px-typeahead-text-color, $gray15);
-  	border: 1px solid var(--px-typeahead-border-color, $gray3);
-    box-shadow: 0px 1px 3px 0px rgba($black,0.15);
+    background-color: var(--px-typeahead-background-color, white);
+  	color: var(--px-typeahead-text-color, black);
+  	border: 1px solid var(--px-typeahead-border-color, gray);
+    box-shadow: 0px 1px 3px 0px rgba(black,0.15);
 		padding-top: $inuit-base-spacing-unit--tiny;
 
 		li {
@@ -63,11 +63,11 @@ $typeahead-icon-color--disabled     :  #{$gray4} !default;
 			padding: $inuit-base-spacing-unit--tiny $inuit-base-spacing-unit--small;
 			margin-bottom:$inuit-base-spacing-unit--tiny;
  			&.item-selected {
- 				background-color: var(--px-typeahead-background-color--hover, $gray1);
-				color: var(--px-typeahead-text-color--hover, $gray15);
+ 				background-color: var(--px-typeahead-background-color--hover, lightgray);
+				color: var(--px-typeahead-text-color--hover, black);
         &:active {
-          background-color: var(--px-typeahead-background-color--selected, $select-default);
-				  color: var(--px-typeahead-text-color--selected, $white);
+          background-color: var(--px-typeahead-background-color--selected, blue);
+				  color: var(--px-typeahead-text-color--selected, white);
         }
  			}
 			span.bold {
