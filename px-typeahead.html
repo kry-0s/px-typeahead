@@ -28,7 +28,7 @@ Custom property | Description | Default
 `--px-typeahead-text-color--selected` | Fill color for text of a selected result | `$white`
 
 @element px-typeahead
-@blurb showing px-typeahead is a Predix UI component that show possible completion options for the search term entered
+@blurb showing Px-typeahead is a Predix UI component similar to a dropdown which shows possible autocompletion options for a given search term based on a list of possible values.
 @homepage index.html
 @demo index.html
 -->
@@ -46,13 +46,13 @@ Custom property | Description | Default
       </iron-ajax>
     </template>
 
-    <input 
-      id="search" 
-      class="text-input input--search" 
-      disabled$="[[disabled]]" 
-      placeholder="{{placeholder}}" 
-      value="{{inputValue::input}}" 
-      on-keyup="_keyup" 
+    <input
+      id="search"
+      class="text-input input--search"
+      disabled$="[[disabled]]"
+      placeholder="{{placeholder}}"
+      value="{{inputValue::input}}"
+      on-keyup="_keyup"
       on-keydown="_keydown"
       on-focus="_onfocus"
       on-blur="_onblur"
@@ -87,7 +87,7 @@ Custom property | Description | Default
      */
     properties: {
       /**
-       * Sets diabled on the input element. 
+       * Sets diabled on the input element.
        * @type {Object}
        */
       disabled: {
@@ -169,13 +169,6 @@ Custom property | Description | Default
         notify:true
       },
       /**
-       * //TODO - For Future Input object.
-       */
-      inputObject:{
-        type:Object,
-        notify:true
-      },
-      /**
        * The current value of the input while the user is searching.
        */
       inputValue: {
@@ -186,8 +179,8 @@ Custom property | Description | Default
       /*
        * Helper function to determine if typeahead is attached yet
        */
-      _isFocused: {		
-        type: Boolean,		
+      _isFocused: {
+        type: Boolean,
         value: false
       }
     },
@@ -228,7 +221,7 @@ Custom property | Description | Default
     _keydown: function(e) {
       if (e.which === 40 || e.which === 38){
           e.preventDefault();
-      } 
+      }
     },
     /**
      * on mouse over for each li item
@@ -244,14 +237,14 @@ Custom property | Description | Default
     /**
      * Sets _isFocused to true
      */
-    _onfocus: function(e) {		
-      this.set('_isFocused', true);		
+    _onfocus: function(e) {
+      this.set('_isFocused', true);
     },
     /**
      * Sets _isFocused to false
      */
-    _onblur: function(e) {		
-      this.set('_isFocused', false);		
+    _onblur: function(e) {
+      this.set('_isFocused', false);
     },
     /**
      * fires an event when search input field changes
