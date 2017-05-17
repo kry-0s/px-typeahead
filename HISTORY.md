@@ -1,4 +1,4 @@
-v2.0.0-prerelease
+v2.0.0
 ==================
 * major revision to pick up dependencies for redesign
 * added word-wrap to fix #10
