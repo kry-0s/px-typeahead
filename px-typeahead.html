@@ -6,6 +6,10 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../px-icon-set/px-icon-set.html">
+<link rel="import" href="../px-icon-set/px-icon.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../paper-input/paper-input.html">
 
 <!--
 
@@ -17,13 +21,13 @@
 ### Styling
 The following custom properties are available for styling:
 
-Custom property | Description | Default
-----------------|-------------|----------
-`--px-typeahead-background-color` | Background color for the typeahead input | `$gray2`
-`--px-typeahead-background-color--selected` | Background color for selected typeahead result | `$select-blue-default`
-`--px-typeahead-border-color` | Border color for the typeahead input | `$gray5`
-`--px-typeahead-text-color` | Fill color for text in the input field and unselected results | `$black`
-`--px-typeahead-text-color--selected` | Fill color for text of a selected result | `$white`
+Custom property | Description
+----------------|-------------
+`--px-typeahead-background-color` | Background color for the typeahead input
+`--px-typeahead-background-color--selected` | Background color for selected typeahead result
+`--px-typeahead-border-color` | Border color for the typeahead input
+`--px-typeahead-text-color` | Fill color for text in the input field and unselected results
+`--px-typeahead-text-color--selected` | Fill color for text of a selected result
 
 @element px-typeahead
 @blurb showing Px-typeahead is a Predix UI component similar to a dropdown which shows possible autocompletion options for a given search term based on a list of possible values.
@@ -34,7 +38,7 @@ Custom property | Description | Default
 
 <dom-module id="px-typeahead">
   <template>
-    <style include="px-typeahead-styles"></style>
+    <style include="px-typeahead-styles" is="custom-style"></style>
     <template is="dom-if" if="{{prefetchUrl}}">
       <iron-ajax
         auto
@@ -44,21 +48,26 @@ Custom property | Description | Default
       </iron-ajax>
     </template>
 
-    <input
-      id="search"
-      class="text-input input--search"
-      disabled$="[[disabled]]"
-      placeholder="{{placeholder}}"
-      value="{{inputValue::input}}"
-      on-keyup="_keyup"
-      on-keydown="_keydown"
-      on-focus="_onfocus"
-      on-blur="_onblur"
-      on-input="_onSearchInputChange"
-      autocomplete="off">
-    </input>
+    <div id="wrapper" class="flex text-input">
+      <input
+        id="search"
+        class="text-input kill-form-styles"
+        disabled$="[[disabled]]"
+        placeholder="{{placeholder}}"
+        value="{{inputValue::input}}"
+        on-keyup="_keyup"
+        on-keydown="_keydown"
+        on-focus="_onfocus"
+        on-blur="_onblur"
+        on-input="_onSearchInputChange"
+        autocomplete="off">
+      </input>
+      <px-icon icon="px:search"></px-icon>
+    </div>
+
     <template is="dom-if" if="{{_isSuggestionsEmtpy(_suggestions)}}">
       <div class="dropdown__container" >
+
         <ul id="searchResults" class="list-bare">
           <template is="dom-repeat" items="[[_boldResults(_suggestions.*, inputValue)]]">
              <li on-tap="_select" on-mouseover="_onhover"
@@ -90,7 +99,8 @@ Custom property | Description | Default
        */
       disabled: {
         type: Boolean,
-        value: false
+        value: false,
+        observer: '_disableInput'
       },
       /**
        * The placeholder for the input element.
@@ -182,8 +192,11 @@ Custom property | Description | Default
         value: false
       }
     },
+
     behaviors: [Polymer.IronResizableBehavior],
+
     listeners: {'iron-resize': '_setSearchResultSize'},
+
     ready: function() {
       // `ready` is called after all elements have been configured, but
       // propagates bottom-up. This element's children are ready, but parents
@@ -199,6 +212,15 @@ Custom property | Description | Default
         }
       });
     },
+
+    _disableInput: function() {
+      if(this.disabled) {
+        this.$.wrapper.classList.add('disable-input');
+      } else {
+        this.$.wrapper.classList.remove('disable-input');
+      }
+    },
+
     _setSearchResultSize: function() {
       if (this.$$('#searchResults')) {
         var searchInputRect = this.$.search.getBoundingClientRect();
@@ -236,12 +258,14 @@ Custom property | Description | Default
      * Sets _isFocused to true
      */
     _onfocus: function(e) {
+      this.$.wrapper.classList.add('manual-focus');
       this.set('_isFocused', true);
     },
     /**
      * Sets _isFocused to false
      */
     _onblur: function(e) {
+      this.$.wrapper.classList.remove('manual-focus');
       this.set('_isFocused', false);
     },
     /**

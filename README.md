@@ -1,6 +1,5 @@
 #Px-Typeahead [![Build Status](https://travis-ci.org/PredixDev/px-typeahead.svg?branch=master)](https://travis-ci.org/PredixDev/px-typeahead)
 
-[![px-typeahead demo](px-typeahead.png?raw=true)](https://github.com/PredixDev/px-typeahead)
 
 ## Overview
 
