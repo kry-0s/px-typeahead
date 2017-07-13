@@ -33,15 +33,15 @@ function runCustomTests() {
           var typeaheadEl = Polymer.dom(document).querySelector('px-typeahead'),
               container = Polymer.dom(typeaheadEl.root).querySelector('.dropdown__container'),
               typeaheadInputEl = Polymer.dom(typeaheadEl.root).querySelector('input');
-          
+
           var onKeyupHandle = function(e) {
             assert.isTrue(!container);
           };
           fireFocusEvent(typeaheadInputEl);
           typeaheadInputEl.value = 'a';
           fireInputEvent(typeaheadInputEl);
-          
-          flush(() => { 
+
+          flush(() => {
             setTimeout(function() {
               var typeaheadEl = Polymer.dom(document).querySelector('px-typeahead'),
                   container = Polymer.dom(typeaheadEl.root).querySelector('.dropdown__container'),
@@ -62,7 +62,7 @@ function runCustomTests() {
               typeaheadInputEl = Polymer.dom(typeaheadEl.root).querySelector('input');
           typeaheadInputEl.value = 'a';
           fireInputEvent(typeaheadInputEl);
-          
+
           flush(() => {
               setTimeout(function() {
               var typeaheadEl = Polymer.dom(document).querySelector('px-typeahead'),
@@ -81,16 +81,6 @@ function runCustomTests() {
             input = Polymer.dom(px_typeahead.root).querySelector('input');
 
         assert.isTrue(input.disabled);
-
-        done();
-      });
-
-      test('Ensure input has a background image', function(done){
-        var typeaheadEl = Polymer.dom(document).querySelector('px-typeahead'),
-            typeaheadInputEl = Polymer.dom(typeaheadEl.root).querySelector('input'),
-            backgroundImageValue = window.getComputedStyle(typeaheadInputEl).backgroundImage;
-
-        assert.notEqual(backgroundImageValue, 'none', 'the background image should not be none' );
 
         done();
       });
