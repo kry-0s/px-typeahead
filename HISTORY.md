@@ -3,6 +3,7 @@ v2.0.0
 * major revision to pick up dependencies for redesign
 * added word-wrap to fix #10
 * component redesign
+* reworked the input to use px-icon
 
 v1.1.1
 ==================
