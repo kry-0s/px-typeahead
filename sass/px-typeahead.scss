@@ -69,6 +69,9 @@ $inuit-enable-input--search     : true;
 }
 
 // Hi Kate :)
+// we need to override the forms styles to force our box to look like a single
+// input instead of an input within an input. form styles use pseudo-classes and
+// as such, cannot just be removed when we dont need them.
 .kill-form-styles {
   padding: 0 !important;
   background-color: transparent !important;
