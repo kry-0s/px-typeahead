@@ -93,10 +93,11 @@ $inuit-enable-input--search     : true;
 }
 
 px-icon {
-  --iron-icon-width: 15px;
-  --iron-icon: unquote("{
-    stroke-width: 3;
-  }");
+  --iron-icon-width: calculateRem(16px);
+  --iron-icon-height: calculateRem(16px);
+  // --iron-icon: unquote("{
+  //   stroke-width: 3;
+  // }");
   --iron-icon-stroke-color: var(--px-typeahead-icon-color, black);
 }
 
