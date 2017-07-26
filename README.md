@@ -1,9 +1,9 @@
-#Px-Typeahead [![Build Status](https://travis-ci.org/PredixDev/px-typeahead.svg?branch=master)](https://travis-ci.org/PredixDev/px-typeahead)
+# px-typeahead [![Build Status](https://travis-ci.org/PredixDev/px-typeahead.svg?branch=master)](https://travis-ci.org/PredixDev/px-typeahead)
 
 
 ## Overview
 
-Px-typeahead is a Predix UI component. It allows a user to input a string, and will search through all possible suggestions in the input array passed to the component, limiting the list based on the user input.
+`Px-typeahead` is a Predix UI component similar to a dropdown which shows possible autocompletion options for a given search term based on a list of possible values.
 
 ## Usage
 
@@ -13,17 +13,17 @@ Px-typeahead is a Predix UI component. It allows a user to input a string, and w
 3. bower
 4. [webcomponents-lite.js polyfill](https://github.com/webcomponents/webcomponentsjs)
 
-Node, npm and bower are necessary to install the component and dependencies. webcomponents.js adds support for web components and custom elements to your application.
+Node, npm, and bower are necessary to install the component and dependencies. webcomponents.js adds support for web components and custom elements to your application.
 
 ## Getting Started
 
-First, install the component via bower on the command line.
+First, install the component via bower on the command line:
 
 ```
 bower install px-typeahead --save
 ```
 
-Second, import the component to your application with the following tag in your head.
+Second, import the component in your application with the following tag in your head:
 
 ```
 <link rel="import" href="/bower_components/px-typeahead/px-typeahead.html"/>
@@ -35,9 +35,6 @@ Finally, use the component in your application:
 <px-typeahead max-suggestions="10" local-candidates="{{your-array-of-input-strings}}" placeholder="your-placeholder">
 </px-typeahead>
 ```
-
-For more - read documentation section below
-
 
 <br />
 <hr />
