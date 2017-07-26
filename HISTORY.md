@@ -1,3 +1,7 @@
+v2.0.1
+==================
+* update readme and fix minor typos
+
 v2.0.0
 ==================
 * major revision to pick up dependencies for redesign
