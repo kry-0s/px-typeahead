@@ -1,3 +1,7 @@
+v2.0.2
+==================
+* Update the way the icon is displayed
+
 v2.0.1
 ==================
 * update readme and fix minor typos

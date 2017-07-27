@@ -48,10 +48,10 @@ Custom property | Description
       </iron-ajax>
     </template>
 
-    <div id="wrapper" class="flex text-input">
+    <div class="search__form">
       <input
         id="search"
-        class="text-input kill-form-styles"
+        class="text-input search__box"
         disabled$="[[disabled]]"
         placeholder="{{placeholder}}"
         value="{{inputValue::input}}"
@@ -62,7 +62,7 @@ Custom property | Description
         on-input="_onSearchInputChange"
         autocomplete="off">
       </input>
-      <px-icon icon="px-utl:search"></px-icon>
+      <px-icon class$="search__icon [[_disabledClass(disabled)]]" icon="px-utl:search"></px-icon>
     </div>
 
     <template is="dom-if" if="{{_isSuggestionsEmtpy(_suggestions)}}">
@@ -99,8 +99,7 @@ Custom property | Description
        */
       disabled: {
         type: Boolean,
-        value: false,
-        observer: '_disableInput'
+        value: false
       },
       /**
        * The placeholder for the input element.
@@ -213,14 +212,6 @@ Custom property | Description
       });
     },
 
-    _disableInput: function() {
-      if(this.disabled) {
-        this.$.wrapper.classList.add('disable-input');
-      } else {
-        this.$.wrapper.classList.remove('disable-input');
-      }
-    },
-
     _setSearchResultSize: function() {
       if (this.$$('#searchResults')) {
         var searchInputRect = this.$.search.getBoundingClientRect();
@@ -258,14 +249,12 @@ Custom property | Description
      * Sets _isFocused to true
      */
     _onfocus: function(e) {
-      this.$.wrapper.classList.add('manual-focus');
       this.set('_isFocused', true);
     },
     /**
      * Sets _isFocused to false
      */
     _onblur: function(e) {
-      this.$.wrapper.classList.remove('manual-focus');
       this.set('_isFocused', false);
     },
     /**
@@ -533,6 +522,10 @@ Custom property | Description
         },100);
 
       }
+    },
+
+    _disabledClass: function(disabled) {
+      return disabled ? 'disableIcon' : '';
     }
     /**
      * this event is fired when the searching has begun on a remote data source

@@ -68,37 +68,36 @@ $inuit-enable-input--search     : true;
   }
 }
 
-// Hi Kate :)
-// we need to override the forms styles to force our box to look like a single
-// input instead of an input within an input. form styles use pseudo-classes and
-// as such, cannot just be removed when we dont need them.
-.kill-form-styles {
-  padding: 0 !important;
-  background-color: transparent !important;
-  border-bottom: none !important;
-}
-
-.manual-focus {
-  border-color: $inuit-forms-border--outer--focused !important;
-  background-color: $inuit-forms-background--focused !important;
-  color: $inuit-forms-color--focused !important;
-}
-
-.disable-input{
-  border-color: $inuit-forms-border--disabled !important;
-  color: $inuit-forms-color--disabled !important;
-  cursor: not-allowed;
-  background-color: $inuit-forms-background--disabled !important;
-  pointer-events: none;
-}
-
 px-icon {
   --iron-icon-width: calculateRem(16px);
   --iron-icon-height: calculateRem(16px);
-  // --iron-icon: unquote("{
-  //   stroke-width: 3;
-  // }");
-  --iron-icon-stroke-color: var(--px-typeahead-icon-color, black);
+  color: var(--px-typeahead-icon-color, black);
+  transition: color .4s;
+}
+
+.disableIcon {
+  --iron-icon-stroke-color: var(--px-input-text-color--disabled, rgba($black,0.2)) !important;
+  color: var(--px-input-text-color--disabled, rgba($black,0.2)) !important;
+}
+
+.search__form {
+  position: relative;
+  display: block;
+}
+
+.search__icon {
+  position: absolute;
+  top: 0;
+  right: calculateRem(8px);
+  display: block;
+  padding: 4px;
+}
+.search__icon--tappable {
+  cursor: pointer;
+}
+
+.search__box {
+  padding-right: 1.5rem;
 }
 
 
