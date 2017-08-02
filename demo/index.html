@@ -31,11 +31,11 @@
       <px-demo-configs configs="[[configs]]" props="{{props}}" chosen-config="{{chosenConfig}}"></px-demo-configs>
 
       <!-- Props -->
-      <px-demo-props props="{{props}}" config="[[chosenConfig]]" class="flex__item"></px-demo-props>
+      <px-demo-props props="{{props}}" config="[[chosenConfig]]"></px-demo-props>
 
       <!-- Component ---------------------------------------------------------->
       <px-demo-component>
-        <div style="width:250px">
+        <div style="width:250px;">
           <px-typeahead
             local-candidates="{{props.localCandidates.value}}"
             disabled="{{props.disabled.value}}"
