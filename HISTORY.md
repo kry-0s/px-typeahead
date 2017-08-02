@@ -1,3 +1,7 @@
+v2.0.3
+==================
+* Fix demo on IE11
+
 v2.0.2
 ==================
 * Update the way the icon is displayed
