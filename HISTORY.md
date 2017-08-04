@@ -1,3 +1,7 @@
+v2.0.4
+==================
+* runtime theme for demo
+
 v2.0.3
 ==================
 * Fix demo on IE11
