@@ -251,17 +251,15 @@ Custom property | Description
       this.set('_isFocused', false);
     },
     /**
-     * fires an event when search input field changes
-     * @event px-typeahead-keydown
-     * @param {e} event
+     * Event fired when search input field changes.
+     * @event px-typeahead-search-input-change
      */
      _onSearchInputChange: function(e){
        this.fire('px-typeahead-search-input-change', e);
       },
     /**
-     * Fired whenever an item is selected.
+     * Event fired when an item is selected.
      * @event px-typeahead-item-selected
-     * @param {String} {The Selected Value}
      */
     /**
      * Callback on click event on list item

@@ -1,3 +1,7 @@
+v2.0.6
+==================
+* fix comment for event (#19)
+
 v2.0.5
 ==================
 * fix comment for analyzer
