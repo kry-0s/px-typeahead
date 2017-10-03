@@ -8,17 +8,13 @@
     <title>
       px-typeahead Demo</title>
     <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
-    <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
-    <link rel="import" href="px-typeahead.html" />
-    <link rel="import" href="../px-theme/px-theme.html" />
-    <link rel="import" href="../px-theme/px-app.html" />
+    <link rel="import" href="../../polymer/polymer-mini.html" />
+    <link rel="import" href="../px-typeahead.html" />
+    <link rel="import" href="../../px-theme/px-theme-styles.html" />
 
-    <style>
-    html:not([style-scope]):not(.style-scope) {
-        background : none;
-      }
-    </style>
+    <style include="px-theme-styles" is="custom-style"></style>
   </head>
 
   <body>
@@ -35,14 +31,14 @@
 
       <h3>Local candidates passed as array of strings</h3>
       <div class="u-1/3">
-        <px-typeahead max-suggestions="10" local-candidates='["abc","abcd","abcde"]' placeholder='["abc","abcd","abcde"]'>
+        <px-typeahead max-suggestions="10" local-candidates='["abc","abcd","abcde","a1b2c3","a/+=|3","Etc/GMT+3"]' placeholder='["abc","abcd","abcde"]'>
         </px-typeahead>
       </div>
 
 
       <div class="u-1/3"><h4>Testing the overlay of the above typeahead</h4></div>
 
-      <h3>Prefetched candidates example with maxSuggestions 4</h3>
+      <h3>Prefetched candidates example with maxSuggestions 4</h3> <!-- This example doesn't work ¯\_(ツ)_/¯ -->
       <div class="u-1/3">
         <px-typeahead max-suggestions="8" prefetch-url="https://predixdev.github.io/px-typeahead/px-typeahead/countries.json" placeholder="Ajax call getting countries.json">
         </px-typeahead>

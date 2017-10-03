@@ -1,3 +1,7 @@
+v2.0.7
+==================
+* move & fix simple demo
+
 v2.0.6
 ==================
 * fix comment for event (#19)
