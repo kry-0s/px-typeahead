@@ -1,3 +1,7 @@
+v2.0.10
+==================
+* fix #23, whitespace issue
+
 v2.0.9
 ==================
 * add device flags

@@ -49,10 +49,7 @@ Custom property | Description
 
         <ul id="searchResults" class="list-bare">
           <template is="dom-repeat" items="[[_boldResults(_suggestions.*, inputValue)]]">
-            <li on-tap="_select" on-mouseover="_onhover" on-keyup="_keyup" class="result">
-              [[item.prefix]]
-              <span class="bold">[[item.highlight]]</span>[[item.suffix]]
-            </li>
+            <li on-tap="_select" on-mouseover="_onhover" on-keyup="_keyup" class="result">[[item.prefix]]<span class="bold">[[item.highlight]]</span>[[item.suffix]]</li>
           </template>
         </ul>
       </div>
