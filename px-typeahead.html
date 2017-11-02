@@ -31,7 +31,7 @@ Custom property | Description
 -->
 <dom-module id="px-typeahead">
   <template>
-    <style include="px-typeahead-styles" is="custom-style"></style>
+    <style include="px-typeahead-styles"></style>
     <template is="dom-if" if="{{prefetchUrl}}">
       <iron-ajax auto url="{{prefetchUrl}}" handle-as="json" last-response="{{_prefetchedCandidates}}">
       </iron-ajax>
