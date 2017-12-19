@@ -39,7 +39,7 @@ Custom property | Description
 
     <div class="search__form">
       <input id="search" class="text-input search__box" disabled$="[[disabled]]" placeholder="{{placeholder}}" value="{{inputValue::input}}"
-        on-keyup="_keyup" on-keydown="_keydown" on-focus="_onfocus" on-blur="_onblur" on-input="_onSearchInputChange" autocomplete="off">
+         on-keydown="_keydown" on-focus="_onfocus" on-blur="_onblur" on-input="_onSearchInputChange" autocomplete="off">
       </input>
       <px-icon class$="search__icon [[_disabledClass(disabled)]]" icon="px-utl:search"></px-icon>
     </div>
@@ -49,7 +49,7 @@ Custom property | Description
 
         <ul id="searchResults" class="list-bare">
           <template is="dom-repeat" items="[[_boldResults(_suggestions.*, inputValue)]]">
-            <li on-tap="_select" on-mouseover="_onhover" on-keyup="_keyup" class="result">[[item.prefix]]<span class="bold">[[item.highlight]]</span>[[item.suffix]]</li>
+            <li on-tap="_select" on-mouseover="_onhover" on-keydown="_keydown" class="result">[[item.prefix]]<span class="bold">[[item.highlight]]</span>[[item.suffix]]</li>
           </template>
         </ul>
       </div>
@@ -192,14 +192,22 @@ Custom property | Description
     },
 
     /**
-     * Callback for keydown event, checks on keys up or down, and disables them.
-     * 40: down arrow
-     * 38: up arrow
+     * Callback for keydown event, disables default behavior, and calls functions accordingly.
      *
      */
     _keydown: function (e) {
-      if (e.which === 40 || e.which === 38) {
+      if (e.which === 40) { //down Arrow
         e.preventDefault();
+        this._downArrowPress(e);
+      } else if (e.which === 38) {  //up arrow
+        e.preventDefault();
+        this._upArrowPress(e);
+      } else if (e.which === 13) { //enter key
+        this._enterPress(e);
+      } else if (e.which === 8) { //enter or space keys
+        this._backspacePress(e);
+      } else {
+        this._checkIfSingleResult(e);
       }
     },
     /**
@@ -257,23 +265,22 @@ Custom property | Description
 
     },
     _downArrowPress: function (e) {
-      var alreadySelected,
+      var alreadySelected = Polymer.dom(this.root).querySelector('.item-selected'),
+        suggestionsMenu = Polymer.dom(this.root).querySelector('ul'),
         selectedItem,
-        suggestionsMenu,
         children;
-      alreadySelected = Polymer.dom(this.root).querySelector('.item-selected');
 
       if (alreadySelected) {
-        alreadySelected.classList.remove('item-selected');
         selectedItem = alreadySelected.nextElementSibling;
 
-        if (selectedItem) {
+        if (selectedItem && selectedItem.tagName === 'LI') {
+          alreadySelected.classList.remove('item-selected');
           selectedItem.classList.add('item-selected');
+          suggestionsMenu.scrollTop = selectedItem.offsetTop;
         } else {
           return;
         }
       } else {
-        suggestionsMenu = Polymer.dom(this.root).querySelector('ul');
 
         if (suggestionsMenu) {
           children = suggestionsMenu.getElementsByTagName('li');
@@ -285,22 +292,20 @@ Custom property | Description
       }
     },
     _upArrowPress: function (e) {
-      var alreadySelected,
+      var alreadySelected = Polymer.dom(this.root).querySelector('.item-selected'),
+        suggestionsMenu = Polymer.dom(this.root).querySelector('ul'),
         selectedItem,
-        suggestionsMenu,
         children;
-      alreadySelected = Polymer.dom(this.root).querySelector('.item-selected');
       if (alreadySelected) {
-        alreadySelected.classList.remove('item-selected');
         selectedItem = alreadySelected.previousElementSibling;
-        if (selectedItem) {
+        if (selectedItem && selectedItem.tagName === 'LI') {
+          alreadySelected.classList.remove('item-selected');
           selectedItem.classList.add('item-selected');
+          suggestionsMenu.scrollTop = selectedItem.offsetTop;
         } else {
           return;
         }
       } else {
-        suggestionsMenu = Polymer.dom(this.root).querySelector('ul');
-
         if (suggestionsMenu) {
           children = suggestionsMenu.getElementsByTagName('li');
           selectedItem = children[0];
@@ -351,29 +356,6 @@ Custom property | Description
     _backspacePress: function (e) {
       var val = e.target.value;
       this._search(val);
-    },
-    /**
-     * Callback for keyup event
-     */
-    _keyup: function (e) {
-
-      var alreadySelected,
-        selectedItem,
-        suggestionsMenu,
-        children;
-
-      if (e.which === 40) { //down Arrow
-        this._downArrowPress(e);
-      } else if (e.which === 38) {  //up arrow
-        this._upArrowPress(e);
-      } else if (e.which === 13) { //enter key
-        this._enterPress(e);
-      } else if (e.which === 8) { //enter or space keys
-        this._backspacePress(e);
-      } else {
-        var input = this.$.search;
-        this._checkIfSingleResult(e);
-      }
     },
     _checkIfSingleResult: function (e) {
       var results = Polymer.dom(this.root).querySelectorAll('.result');

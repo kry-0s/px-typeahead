@@ -1,3 +1,7 @@
+v2.1.1
+==================
+* fix keyboard scrolling (#24)
+
 v2.1.0
 ==================
 * Polymer 1.x/2.x hybrid support
