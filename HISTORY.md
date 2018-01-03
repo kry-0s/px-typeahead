@@ -1,3 +1,7 @@
+v2.2.0
+==================
+* add required property and validation error state (#7)
+
 v2.1.1
 ==================
 * fix keyboard scrolling (#24)

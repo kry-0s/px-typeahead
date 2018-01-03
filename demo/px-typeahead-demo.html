@@ -40,6 +40,7 @@
           <px-typeahead
             local-candidates="{{props.localCandidates.value}}"
             disabled="{{props.disabled.value}}"
+            required="{{props.required.value}}"
             prefetch-url="{{props.prefetchUrl.value}}"
             placeholder="[[props.placeholder.value]]">
           </px-typeahead>
@@ -114,6 +115,11 @@
         inputType: 'text'
       },
       disabled: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+      required: {
         type: Boolean,
         defaultValue: false,
         inputType: 'toggle'

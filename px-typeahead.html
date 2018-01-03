@@ -10,7 +10,7 @@
 <!--
 ### Usage
 
-    <px-typeahead max-suggestions="10" local-candidates="{{your-array-of-input-strings}}" placeholder="your-placeholder">
+    <px-typeahead max-suggestions="10" local-candidates='["array","of","options"]' placeholder="your-placeholder">
     </px-typeahead>
 
 ### Styling
@@ -39,7 +39,7 @@ Custom property | Description
 
     <div class="search__form">
       <input id="search" class="text-input search__box" disabled$="[[disabled]]" placeholder="{{placeholder}}" value="{{inputValue::input}}"
-         on-keydown="_keydown" on-focus="_onfocus" on-blur="_onblur" on-input="_onSearchInputChange" autocomplete="off">
+         on-keydown="_keydown" on-focus="_onfocus" on-blur="_onblur" on-input="_onSearchInputChange" autocomplete="off" required="[[required]]">
       </input>
       <px-icon class$="search__icon [[_disabledClass(disabled)]]" icon="px-utl:search"></px-icon>
     </div>
@@ -153,11 +153,19 @@ Custom property | Description
         observer: '_search'
       },
       /*
-       * Helper function to determine if typeahead is attached yet
+       * Helper function to determine if typeahead is attached yet.
        */
       _isFocused: {
         type: Boolean,
         value: false
+      },
+      /*
+       * Whether the typeahead is required to be filled in before proceeding.
+       */
+      required: {
+        type: Boolean,
+        value: false,
+        observer: '_requiredChanged'
       }
     },
 
@@ -232,6 +240,7 @@ Custom property | Description
      */
     _onblur: function (e) {
       this.set('_isFocused', false);
+      this.toggleClass('validation-error', this.required && !this.value, this.$.search);
     },
     /**
      * Fired when the search input field's content changes.
@@ -259,7 +268,7 @@ Custom property | Description
         this.set('_suggestions', []);
       }, 100);
 
-
+      this.toggleClass('validation-error', this.required && !this.value, this.$.search);
       this.fire('px-typeahead-item-selected', this.value);
       e.stopPropagation();
 
@@ -350,10 +359,18 @@ Custom property | Description
       this.async(function () {
         this.set('_suggestions', []);
       }, 100);
+      this.toggleClass('validation-error', false, this.$.search);
       this.fire('px-typeahead-item-selected', this.value);
       Polymer.dom(this.root).querySelector('input').focus();
     },
     _backspacePress: function (e) {
+      this.value = '';
+      /**
+       * Fired when an item is deselected because the user has
+       * pressed the backspace key to change or clear the search field.
+       * @event px-typeahead-item-deselected
+       */
+      this.fire('px-typeahead-item-deselected');
       var val = e.target.value;
       this._search(val);
     },
@@ -480,6 +497,11 @@ Custom property | Description
 
     _disabledClass: function (disabled) {
       return disabled ? 'disableIcon' : '';
+    },
+    _requiredChanged: function(newValue) {
+      if(newValue === false) {
+        this.toggleClass('validation-error', false, this.$.search);
+      }
     }
   });
 
