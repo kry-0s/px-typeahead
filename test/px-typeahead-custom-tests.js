@@ -34,6 +34,17 @@ suite('<px-typeahead>', function (done) {
     );
   });
 
+  test('clears when the icon is pressed', (done)=> {
+    typeaheadEl.inputValue = 'abc';
+    flush(()=>{
+      let clear = Polymer.dom(typeaheadEl.root).querySelector('#clear__icon');
+      clear.click();
+      assert.equal(typeaheadEl.value, '');
+      assert.equal(typeaheadEl.inputValue, '');
+      done();
+    });
+  });
+
   test('is disabled', ()=> {
     let disabledTypeaheadEl = fixture('typeaheadDisabled');
     let input = Polymer.dom(disabledTypeaheadEl.root).querySelector('input');

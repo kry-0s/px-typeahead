@@ -1,3 +1,7 @@
+v2.2.2
+==================
+* add clear icon for resetting typeahead
+
 v2.2.1
 ==================
 * reduce icon-set imports

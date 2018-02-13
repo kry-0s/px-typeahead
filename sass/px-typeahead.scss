@@ -86,15 +86,12 @@ px-icon {
   display: block;
 }
 
-.search__icon {
+.typeahead__icon {
   position: absolute;
   top: 0;
   right: calculateRem(8px);
   display: block;
   padding: 4px;
-}
-.search__icon--tappable {
-  cursor: pointer;
 }
 
 .search__box {

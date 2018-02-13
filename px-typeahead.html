@@ -41,7 +41,12 @@ Custom property | Description
       <input id="search" class="text-input search__box" disabled$="[[disabled]]" placeholder="{{placeholder}}" value="{{inputValue::input}}"
          on-keydown="_keydown" on-focus="_onfocus" on-blur="_onblur" on-input="_onSearchInputChange" autocomplete="off" required="[[required]]">
       </input>
-      <px-icon class$="search__icon [[_disabledClass(disabled)]]" icon="px-utl:search"></px-icon>
+      <template is="dom-if" if="{{!inputValue}}">
+        <px-icon id="search__icon" class$="typeahead__icon [[_disabledClass(disabled)]]" icon="px-utl:search"></px-icon>
+      </template>
+      <template is="dom-if" if="{{inputValue}}">
+        <px-icon id="clear__icon" class="typeahead__icon" icon="px-nav:close" on-tap="_clear"></px-icon>
+      </template>
     </div>
 
     <template is="dom-if" if="{{_isSuggestionsEmpty(_suggestions)}}">
@@ -142,6 +147,7 @@ Custom property | Description
        */
       value: {
         type: String,
+        value: '',
         notify: true
       },
       /**
@@ -149,6 +155,7 @@ Custom property | Description
        */
       inputValue: {
         type: String,
+        value: '',
         notify: true,
         observer: '_search'
       },
@@ -214,6 +221,8 @@ Custom property | Description
         this._enterPress(e);
       } else if (e.which === 8) { //enter or space keys
         this._backspacePress(e);
+      } else if (e.which === 27) { //esc key
+        this._clear();
       } else {
         this._checkIfSingleResult(e);
       }
@@ -494,7 +503,12 @@ Custom property | Description
 
       }
     },
-
+    _clear: function() {
+      this.set('inputValue', '');
+      this.set('value', '');
+      this.set('_suggestions', []);
+      Polymer.dom(this.root).querySelector('input').focus();
+    },
     _disabledClass: function (disabled) {
       return disabled ? 'disableIcon' : '';
     },
