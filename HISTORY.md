@@ -1,3 +1,7 @@
+v2.3.1
+==================
+* fire deselect event on clear
+
 v2.3.0
 ==================
 * add clear icon for resetting typeahead

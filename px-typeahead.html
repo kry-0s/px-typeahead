@@ -508,6 +508,7 @@ Custom property | Description
       this.set('value', '');
       this.set('_suggestions', []);
       Polymer.dom(this.root).querySelector('input').focus();
+      this.fire('px-typeahead-item-deselected');
     },
     _disabledClass: function (disabled) {
       return disabled ? 'disableIcon' : '';
