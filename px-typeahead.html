@@ -1,11 +1,12 @@
-<link rel="import" href="../polymer/polymer.html" />
-<link rel="import" href="../promise-polyfill/promise-polyfill-lite.html">
-<link rel="import" href="../iron-ajax/iron-ajax.html">
-<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
-<link rel="import" href="../px-icon-set/px-icon-set-utility.html">
-<link rel="import" href="../px-icon-set/px-icon.html">
-<link rel="import" href="../iron-icon/iron-icon.html">
-<link rel="import" href="css/px-typeahead-styles.html">
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../promise-polyfill/promise-polyfill-lite.html"/>
+<link rel="import" href="../iron-ajax/iron-ajax.html"/>
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html"/>
+<link rel="import" href="../px-icon-set/px-icon-set-utility.html"/>
+<link rel="import" href="../px-icon-set/px-icon.html"/>
+<link rel="import" href="../iron-icon/iron-icon.html"/>
+<link rel="import" href="px-typeahead-content.html"/>
+<link rel="import" href="css/px-typeahead-styles.html"/>
 
 <!--
 ### Usage
@@ -38,7 +39,7 @@ Custom property | Description
     </template>
 
     <div class="search__form">
-      <input id="search" class="text-input search__box" disabled$="[[disabled]]" placeholder="{{placeholder}}" value="{{inputValue::input}}"
+      <input id="search" class="text-input search__box" disabled$="[[disabled]]" placeholder="[[placeholder]]" value="{{inputValue::input}}"
          on-keydown="_keydown" on-focus="_onfocus" on-blur="_onblur" on-input="_onSearchInputChange" autocomplete="off" required="[[required]]">
       </input>
       <template is="dom-if" if="{{!inputValue}}">
@@ -50,14 +51,11 @@ Custom property | Description
     </div>
 
     <template is="dom-if" if="{{_isSuggestionsEmpty(_suggestions)}}">
-      <div class="dropdown__container">
-
-        <ul id="searchResults" class="list-bare">
-          <template is="dom-repeat" items="[[_boldResults(_suggestions.*, inputValue)]]">
-            <li on-tap="_select" on-mouseover="_onhover" on-keydown="_keydown" class="result">[[item.prefix]]<span class="bold">[[item.highlight]]</span>[[item.suffix]]</li>
-          </template>
-        </ul>
-      </div>
+      <px-typeahead-content
+        id="typeaheadContent"
+        suggestions="[[_suggestions]]"
+        input-value="[[inputValue]]">
+      </px-typeahead-content>
     </template>
   </template>
 </dom-module>
@@ -197,9 +195,10 @@ Custom property | Description
     },
 
     _setSearchResultSize: function () {
-      if (this.$$('#searchResults')) {
+      var contents = Polymer.dom(this.root).querySelector('#typeaheadContent');
+      if (contents) {
         var searchInputRect = this.$.search.getBoundingClientRect();
-        this.$$('#searchResults').style.width = searchInputRect.width + 'px';
+        contents._setSearchResultSize(searchInputRect.width + 'px');
       }
     },
     _isSuggestionsEmpty: function () {
@@ -211,20 +210,19 @@ Custom property | Description
      *
      */
     _keydown: function (e) {
+      var contents = Polymer.dom(this.root).querySelector('#typeaheadContent');
       if (e.which === 40) { //down Arrow
         e.preventDefault();
-        this._downArrowPress(e);
+        contents.downArrowPress(e);
       } else if (e.which === 38) {  //up arrow
         e.preventDefault();
-        this._upArrowPress(e);
+        contents.upArrowPress(e);
       } else if (e.which === 13) { //enter key
         this._enterPress(e);
       } else if (e.which === 8) { //enter or space keys
         this._backspacePress(e);
       } else if (e.which === 27) { //esc key
         this._clear();
-      } else {
-        this._checkIfSingleResult(e);
       }
     },
     /**
@@ -282,68 +280,19 @@ Custom property | Description
       e.stopPropagation();
 
     },
-    _downArrowPress: function (e) {
-      var alreadySelected = Polymer.dom(this.root).querySelector('.item-selected'),
-        suggestionsMenu = Polymer.dom(this.root).querySelector('ul'),
-        selectedItem,
-        children;
-
-      if (alreadySelected) {
-        selectedItem = alreadySelected.nextElementSibling;
-
-        if (selectedItem && selectedItem.tagName === 'LI') {
-          alreadySelected.classList.remove('item-selected');
-          selectedItem.classList.add('item-selected');
-          suggestionsMenu.scrollTop = selectedItem.offsetTop;
-        } else {
-          return;
-        }
-      } else {
-
-        if (suggestionsMenu) {
-          children = suggestionsMenu.getElementsByTagName('li');
-          selectedItem = children[0];
-          if (selectedItem) {
-            selectedItem.classList.add('item-selected');
-          }
-        }
-      }
-    },
-    _upArrowPress: function (e) {
-      var alreadySelected = Polymer.dom(this.root).querySelector('.item-selected'),
-        suggestionsMenu = Polymer.dom(this.root).querySelector('ul'),
-        selectedItem,
-        children;
-      if (alreadySelected) {
-        selectedItem = alreadySelected.previousElementSibling;
-        if (selectedItem && selectedItem.tagName === 'LI') {
-          alreadySelected.classList.remove('item-selected');
-          selectedItem.classList.add('item-selected');
-          suggestionsMenu.scrollTop = selectedItem.offsetTop;
-        } else {
-          return;
-        }
-      } else {
-        if (suggestionsMenu) {
-          children = suggestionsMenu.getElementsByTagName('li');
-          selectedItem = children[0];
-          if (selectedItem) {
-            selectedItem.classList.add('item-selected');
-          }
-        }
-      }
-    },
     _enterPress: function (e) {
-      var alreadySelected,
-        selectedItem,
-        suggestionsMenu,
-        children,
-        results;
+      var contents,
+          alreadySelected,
+          selectedItem,
+          suggestionsMenu,
+          children,
+          results;
 
-      alreadySelected = Polymer.dom(this.root).querySelector('.item-selected');
+      contents = Polymer.dom(this.root).querySelector('#typeaheadContent');
+      alreadySelected = Polymer.dom(contents.root).querySelector('.item-selected');
 
       //if we only have 1 option, select it, otherwise, do nothing.
-      results = Polymer.dom(this.root).querySelectorAll('.result');
+      results = Polymer.dom(contents.root).querySelectorAll('.result');
       if (results.length === 1) {
         //if we only have 1 result, we should select it.
         selectedItem = results[0];
@@ -382,12 +331,6 @@ Custom property | Description
       this.fire('px-typeahead-item-deselected');
       var val = e.target.value;
       this._search(val);
-    },
-    _checkIfSingleResult: function (e) {
-      var results = Polymer.dom(this.root).querySelectorAll('.result');
-      if (this._suggestions.length === 1) {
-        this.toggleClass('item-selected', true, results[0]);
-      }
     },
     _localCandidatesSearch: function (term) {
       var matched = [];
@@ -447,25 +390,6 @@ Custom property | Description
       }, this.remoteUrlWaitMs);
       return matched;
     },
-    /**
-     * Highlights matching letters in bold.
-     */
-    _boldResults: function (items, term) {
-      var resultsList = items.base.map(function (fullString) {
-        var termLocation = fullString.trim().toLowerCase().indexOf(term.trim().toLowerCase());
-        if (termLocation > -1) {
-          return {
-            prefix: fullString.trim().substr(0, termLocation),
-            highlight: fullString.trim().substr(termLocation, term.length),
-            suffix: fullString.trim().substr(termLocation + term.length)
-          };
-        }
-      });
-      resultsList = resultsList.filter(function (result) {
-        return result !== "undefined";
-      });
-      return resultsList;
-    },
     _search: function (term) {
       if (this._isFocused) {
         this.debounce('search', function () {
@@ -494,13 +418,14 @@ Custom property | Description
           }
 
           this.set('_suggestions', matched);
+          var content = Polymer.dom(this.root).querySelector('#typeaheadContent');
+          if(content) content.checkIfSingleResult();
 
           //make sure the results are the same size as the input box.
           this.async(function () {
             this._setSearchResultSize();
           }, 5);
         }, 100);
-
       }
     },
     _clear: function() {

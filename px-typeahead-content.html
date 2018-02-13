@@ -1,0 +1,149 @@
+<link rel="import" href="../promise-polyfill/promise-polyfill-lite.html"/>
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../iron-ajax/iron-ajax.html"/>
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html"/>
+<link rel="import" href="../px-icon-set/px-icon-set-utility.html"/>
+<link rel="import" href="../px-icon-set/px-icon.html"/>
+<link rel="import" href="../iron-icon/iron-icon.html"/>
+<link rel="import" href="css/px-typeahead-styles.html"/>
+
+<dom-module id="px-typeahead-content">
+  <template>
+    <style include="px-typeahead-styles"></style>
+
+    <div class="dropdown__container">
+      <ul id="searchResults" class="list-bare">
+        <template is="dom-repeat" items="[[_boldResults(suggestions.*, inputValue)]]">
+          <li on-tap="_select" on-mouseover="_onhover" on-keydown="_keydown" class="result">[[item.prefix]]<span class="bold">[[item.highlight]]</span>[[item.suffix]]</li>
+        </template>
+      </ul>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+
+    is: 'px-typeahead-content',
+
+    properties: {
+      /**
+       * Internal variable holding all matched suggestions.
+       */
+      suggestions: {
+        type: Array,
+        value: function () {
+          return [];
+        },
+        notify: true
+      },
+      /**
+       * The current value of the input while the user is searching.
+       */
+      inputValue: {
+        type: String,
+        value: ''
+      }
+    },
+    /**
+     * on mouse over for each li item
+     *
+     */
+    _onhover: function (e) {
+      var alreadySelected = Polymer.dom(this.root).querySelector('.item-selected');
+      if (alreadySelected) {
+        alreadySelected.classList.remove('item-selected');
+      }
+      e.currentTarget.classList.add('item-selected');
+    },
+    /**
+     * Callback on click event on list item
+     *
+     */
+    _select: function (e) {
+      this.fire('item-selected', true, e);
+    },
+    _setSearchResultSize: function (width) {
+      if (this.$.searchResults) {
+        this.$.searchResults.style.width = width;
+      }
+    },
+    downArrowPress: function (e) {
+      var alreadySelected = Polymer.dom(this.root).querySelector('.item-selected'),
+        suggestionsMenu = Polymer.dom(this.root).querySelector('ul'),
+        selectedItem,
+        children;
+
+      if (alreadySelected) {
+        selectedItem = alreadySelected.nextElementSibling;
+
+        if (selectedItem && selectedItem.tagName === 'LI') {
+          alreadySelected.classList.remove('item-selected');
+          selectedItem.classList.add('item-selected');
+          suggestionsMenu.scrollTop = selectedItem.offsetTop;
+        } else {
+          return;
+        }
+      } else {
+
+        if (suggestionsMenu) {
+          children = suggestionsMenu.getElementsByTagName('li');
+          selectedItem = children[0];
+          if (selectedItem) {
+            selectedItem.classList.add('item-selected');
+          }
+        }
+      }
+    },
+    upArrowPress: function (e) {
+      var alreadySelected = Polymer.dom(this.root).querySelector('.item-selected'),
+        suggestionsMenu = Polymer.dom(this.root).querySelector('ul'),
+        selectedItem,
+        children;
+      if (alreadySelected) {
+        selectedItem = alreadySelected.previousElementSibling;
+        if (selectedItem && selectedItem.tagName === 'LI') {
+          alreadySelected.classList.remove('item-selected');
+          selectedItem.classList.add('item-selected');
+          suggestionsMenu.scrollTop = selectedItem.offsetTop;
+        } else {
+          return;
+        }
+      } else {
+        if (suggestionsMenu) {
+          children = suggestionsMenu.getElementsByTagName('li');
+          selectedItem = children[0];
+          if (selectedItem) {
+            selectedItem.classList.add('item-selected');
+          }
+        }
+      }
+    },
+    checkIfSingleResult: function (e) {
+      var results = Polymer.dom(this.root).querySelectorAll('.result');
+      if (this.suggestions.length === 1) {
+        this.toggleClass('item-selected', true, results[0]);
+      }
+    },
+    /**
+     * Highlights matching letters in bold.
+     */
+    _boldResults: function (items, term) {
+      var resultsList = items.base.map(function (fullString) {
+        var termLocation = fullString.trim().toLowerCase().indexOf(term.trim().toLowerCase());
+        if (termLocation > -1) {
+          return {
+            prefix: fullString.trim().substr(0, termLocation),
+            highlight: fullString.trim().substr(termLocation, term.length),
+            suffix: fullString.trim().substr(termLocation + term.length)
+          };
+        }
+      });
+      resultsList = resultsList.filter(function (result) {
+        return result !== "undefined";
+      });
+      return resultsList;
+    }
+  });
+
+</script>
