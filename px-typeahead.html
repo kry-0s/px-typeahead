@@ -486,11 +486,11 @@ Custom property | Description
           }
 
           if (this._prefetchedCandidates && this._prefetchedCandidates.length) {
-            matched = this._prefetchedCandidatesSearch(term);
+            matched = matched.concat(this._prefetchedCandidatesSearch(term));
           }
 
           if (this.remoteUrl) {
-            matched = this._remoteUrlSearch(term);
+            matched = matched.concat(this._remoteUrlSearch(term));
           }
 
           this.set('_suggestions', matched);
