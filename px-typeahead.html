@@ -501,15 +501,15 @@ Custom property | Description
             matched = this.customSearchFunction(this.localCandidates, term);
           }
 
-          if (this.localCandidates && this.localCandidates.length) {
+          else if (this.localCandidates && this.localCandidates.length) {
             matched = this._localCandidatesSearch(term);
           }
 
-          if (this._prefetchedCandidates && this._prefetchedCandidates.length) {
+          else if (this._prefetchedCandidates && this._prefetchedCandidates.length) {
             matched = this._prefetchedCandidatesSearch(term);
           }
 
-          if (this.remoteUrl) {
+          else if (this.remoteUrl) {
             matched = this._remoteUrlSearch(term);
           }
 
