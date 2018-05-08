@@ -496,6 +496,10 @@ Custom property | Description
             this.set('_suggestions', []);
             return;
           }
+          
+          if (this.customSearchFunction && typeof this.customSearchFunction === "function") {
+            matched = this.customSearchFunction(this.localCandidates, term);
+          }
 
           if (this.localCandidates && this.localCandidates.length) {
             matched = this._localCandidatesSearch(term);
